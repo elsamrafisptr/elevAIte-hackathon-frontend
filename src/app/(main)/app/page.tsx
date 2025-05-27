@@ -1,0 +1,5 @@
+const MainAppPage = () => {
+  return <div>MainAppPage</div>
+}
+
+export default MainAppPage
