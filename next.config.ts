@@ -1,7 +1,17 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  reactStrictMode: true,
+  poweredByHeader: false,
+  serverExternalPackages: [],
+  images: {},
+  experimental: {
+    optimizeCss: false,
+    optimisticClientCache: true,
+    optimizeServerReact: true,
+    optimizePackageImports: [],
+    serverMinification: true
+  }
+}
 
-export default nextConfig;
+export default nextConfig
