@@ -1,5 +1,7 @@
+import Login from '@/modules/auth/login'
+
 const LoginPage = () => {
-  return <div>ForgotPasswordPage</div>
+  return <Login />
 }
 
 export default LoginPage

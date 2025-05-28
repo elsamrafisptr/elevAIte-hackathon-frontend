@@ -1,5 +1,7 @@
+import LoadingLayouts from '@/components/layouts/LoadingLayouts'
+
 const Loading = () => {
-  return <div>Loading</div>
+  return <LoadingLayouts />
 }
 
 export default Loading
