@@ -1,5 +1,7 @@
+import Register from '@/modules/auth/register'
+
 const RegisterPage = () => {
-  return <div>RegisterPage</div>
+  return <Register />
 }
 
 export default RegisterPage

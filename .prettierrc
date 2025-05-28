@@ -1,4 +1,22 @@
 {
+  "importOrder": [
+    "^(next/(.*)$)|^(next$)",
+    "<THIRD_PARTY_MODULES>",
+    "^[./]",
+    "^@/assets/(.*)$",
+    "^@/modules/(.*)$",
+    "^@/components/(.*)$",
+    "^@/services/(.*)$",
+    "^@/stores/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/common/constants/(.*)$",
+    "^@/common/schemas/(.*)$",
+    "^@/common/types/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/utils/(.*)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "semi": false,
   "tabWidth": 2,
   "printWidth": 88,
@@ -6,5 +24,5 @@
   "trailingComma": "none",
   "arrowParens": "avoid",
   "endOfLine": "auto",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
 }
