@@ -1,5 +1,7 @@
+import NotFoundLayouts from '@/components/layouts/NotFoundLayouts'
+
 const NotFoundPage = () => {
-  return <div>NotFoundPage</div>
+  return <NotFoundLayouts />
 }
 
 export default NotFoundPage

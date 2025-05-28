@@ -15,7 +15,7 @@ const Layouts = (props: { children: ReactNode }) => {
 
   return (
     <main className="min-h-screen w-full">
-      {!isMobile ? <MenuNavigationBar /> : <MobileMenuNavigationBar />}
+      {!isMobile ? <MenuNavigationBar token={false} /> : <MobileMenuNavigationBar />}
       {props.children}
     </main>
   )
