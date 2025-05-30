@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: [],
   images: {},
   experimental: {
+    ppr: false,
     optimizeCss: false,
     optimisticClientCache: true,
     optimizeServerReact: true,
