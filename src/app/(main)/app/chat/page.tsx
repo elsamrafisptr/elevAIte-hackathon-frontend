@@ -1,5 +1,7 @@
+import Chat from '@/modules/main/app/chat'
+
 const ChatPage = () => {
-  return <div>ChatPage</div>
+  return <Chat />
 }
 
 export default ChatPage

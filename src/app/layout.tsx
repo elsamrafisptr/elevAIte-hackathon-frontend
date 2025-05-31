@@ -5,6 +5,10 @@ import '../assets/globals.css'
 
 import Layouts from '@/components/layouts/Layouts'
 
+export const viewport = {
+  maximumScale: 1
+}
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin']
@@ -26,8 +30,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
+      <body className="antialiased">
         <Layouts>{children}</Layouts>
       </body>
     </html>
