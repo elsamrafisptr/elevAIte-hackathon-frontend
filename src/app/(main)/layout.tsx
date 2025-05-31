@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+
 import { ReactNode } from 'react'
 
 const MainAppLayout = async (props: { children: ReactNode }) => {
