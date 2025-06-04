@@ -11,6 +11,7 @@
     "format": "prettier --write .",
     "format:check": "prettier -c .",
     "types:check": "tsc --noEmit --pretty",
+    "pre-commit": "sh ./.husky/pre-commit",
     "prepare": "husky"
   },
   "dependencies": {
