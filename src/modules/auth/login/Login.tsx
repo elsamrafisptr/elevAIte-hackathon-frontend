@@ -18,8 +18,8 @@ import { Input } from '@/components/ui/input'
 const Login = () => {
   const { form, isPending, onSubmit } = useLoginForm()
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-5 bg-gradient-to-t from-blue-200 to-blue-50">
-      <div className="flex w-full flex-col justify-center space-y-8 rounded-xl p-8 shadow-md md:w-max bg-white md:min-w-[30rem] dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-t from-blue-200 to-blue-50 px-5">
+      <div className="flex w-full flex-col justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">
         <Image
           src="/logo-black.png"
           alt="happykids"
