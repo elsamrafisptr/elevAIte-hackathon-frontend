@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import '../assets/globals.css'
 
 import Layouts from '@/components/layouts/Layouts'
+import { Toaster } from '@/components/ui/sonner'
 
 export const viewport = {
   maximumScale: 1
@@ -37,6 +38,7 @@ export default function RootLayout({
     >
       <body className="antialiased">
         <Layouts>{children}</Layouts>
+        <Toaster />
       </body>
     </html>
   )
