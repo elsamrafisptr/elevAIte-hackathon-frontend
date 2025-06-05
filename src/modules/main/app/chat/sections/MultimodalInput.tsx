@@ -1,11 +1,12 @@
 'use client'
 
-import { cn } from '@/utils'
 // import type { UseChatHelpers } from '@ai-sdk/react'
 import { memo, useEffect, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+
+import { cn } from '@/lib/utils'
 
 const MultimodalInput = ({ className }: { className?: string }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
