@@ -1,27 +1,19 @@
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
-import { MOBILE_NAVIGATION_BLOCKER } from '@/common/constants'
-import { Home, Library, MessageCircle, Settings, User } from 'lucide-react'
+import { MOBILE_NAVIGATION_BLOCKER, navItems } from '@/common/constants'
 import { useState } from 'react'
 
 const MobileMenuNavigationBar = () => {
   const [activeNavItem, setActiveNavItem] = useState('dashboard')
   const pathname = usePathname()
-
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home },
-    { id: 'resources', label: 'Resources', icon: Library },
-    { id: 'community', label: 'Community', icon: MessageCircle },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: Settings }
-  ]
-
-  const handleNavClick = (itemId: string) => {
-    setActiveNavItem(itemId)
-    console.log(`Navigating to ${itemId}`)
-  }
+  const router = useRouter()
 
   if (MOBILE_NAVIGATION_BLOCKER.includes(pathname)) return null
+
+  const handleNavClick = (itemId: string, href: string) => {
+    setActiveNavItem(itemId)
+    router.push(href)
+  }
 
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-200 bg-white/95 backdrop-blur-md md:hidden">
@@ -32,8 +24,9 @@ const MobileMenuNavigationBar = () => {
           return (
             <button
               key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`flex min-w-0 flex-1 flex-col items-center justify-center p-2 transition-all duration-200 ${
+              type="button"
+              onClick={() => handleNavClick(item.id, item.href)}
+              className={`flex min-w-0 flex-1 flex-col items-center justify-center p-2 transition-all duration-200 hover:cursor-pointer ${
                 isActive
                   ? 'scale-105 transform text-blue-600'
                   : 'text-gray-500 hover:text-gray-700 active:scale-95'
