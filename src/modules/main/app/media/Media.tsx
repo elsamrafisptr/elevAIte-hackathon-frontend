@@ -3,14 +3,18 @@ import LatestBlog from './sections/LatestBlog'
 import LatestPost from './sections/LatestPost'
 import LatestVideo from './sections/LatestVideo'
 
+import PageSectionLayout from '@/components/layouts/PageSectionLayout'
+
 const Media = () => {
   return (
-    <section className="flex min-h-screen w-full flex-col gap-0 bg-slate-50">
-      <Headline />
-      <LatestPost />
-      <LatestBlog />
-      <LatestVideo />
-    </section>
+    <PageSectionLayout>
+      <div className="space-y-16">
+        <Headline />
+        <LatestBlog />
+        <LatestPost />
+        <LatestVideo />
+      </div>
+    </PageSectionLayout>
   )
 }
 

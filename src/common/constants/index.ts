@@ -1,3 +1,5 @@
-const MOBILE_NAVIGATION_BLOCKER = ['/register', '/login', '/forgot-password']
+import navItems from './navbar'
 
-export { MOBILE_NAVIGATION_BLOCKER }
+const MOBILE_NAVIGATION_BLOCKER = ['/', '/register', '/login', '/forgot-password']
+
+export { MOBILE_NAVIGATION_BLOCKER, navItems }
