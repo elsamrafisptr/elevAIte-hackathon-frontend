@@ -19,7 +19,7 @@ export function LazyImage({
   src,
   alt,
   className,
-  fallback = '/placeholder.svg?height=400&width=400',
+  fallback = '../../assets/placeholder.svg',
   onLoad,
   onError
 }: LazyImageProps) {
