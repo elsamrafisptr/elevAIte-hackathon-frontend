@@ -1,5 +1,7 @@
+import UserProfile from '@/modules/main/dashboard/user-profile'
+
 const UserPage = () => {
-  return <div>UserPage</div>
+  return <UserProfile />
 }
 
 export default UserPage
