@@ -1,16 +1,69 @@
 'use client'
 
-// import type { UseChatHelpers } from '@ai-sdk/react'
-import { memo, useEffect, useRef, useState } from 'react'
+import type { ChatRequestOptions, CreateMessage, Message } from 'ai'
+import { motion } from 'framer-motion'
+import { ArrowUpIcon, StopCircle } from 'lucide-react'
+import type React from 'react'
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useEffect,
+  useRef
+} from 'react'
+import { toast } from 'sonner'
+import { useLocalStorage, useWindowSize } from 'usehooks-ts'
 
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-import { cn } from '@/lib/utils'
+import { cn, sanitizeUIMessages } from '@/lib/utils'
 
-const MultimodalInput = ({ className }: { className?: string }) => {
+const suggestedActions = [
+  {
+    title: 'What is the weather',
+    label: 'in San Francisco?',
+    action: 'What is the weather in San Francisco?'
+  },
+  {
+    title: 'How is python useful',
+    label: 'for AI engineers?',
+    action: 'How is python useful for AI engineers?'
+  }
+]
+
+export function MultimodalInput({
+  input,
+  setInput,
+  isLoading,
+  stop,
+  messages,
+  setMessages,
+  append,
+  handleSubmit,
+  className
+}: {
+  chatId: string
+  input: string
+  setInput: (value: string) => void
+  isLoading: boolean
+  stop: () => void
+  messages: Array<Message>
+  setMessages: Dispatch<SetStateAction<Array<Message>>>
+  append: (
+    message: Message | CreateMessage,
+    chatRequestOptions?: ChatRequestOptions
+  ) => Promise<string | null | undefined>
+  handleSubmit: (
+    event?: {
+      preventDefault?: () => void
+    },
+    chatRequestOptions?: ChatRequestOptions
+  ) => void
+  className?: string
+}) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [input, setInput] = useState('')
+  const { width } = useWindowSize()
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -25,88 +78,116 @@ const MultimodalInput = ({ className }: { className?: string }) => {
     }
   }
 
+  const [localStorageInput, setLocalStorageInput] = useLocalStorage('input', '')
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      const domValue = textareaRef.current.value
+      // Prefer DOM value over localStorage to handle hydration
+      const finalValue = domValue || localStorageInput || ''
+      setInput(finalValue)
+      adjustHeight()
+    }
+    // Only run once after hydration
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setLocalStorageInput(input)
+  }, [input, setLocalStorageInput])
+
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value)
     adjustHeight()
   }
 
+  const submitForm = useCallback(() => {
+    handleSubmit(undefined, {})
+    setLocalStorageInput('')
+
+    if (width && width > 768) {
+      textareaRef.current?.focus()
+    }
+  }, [handleSubmit, setLocalStorageInput, width])
+
   return (
-    <div className="relative flex w-full flex-col gap-4 px-4">
+    <div className="relative mb-8 flex w-full flex-col gap-4">
+      {messages.length === 0 && (
+        <div className="grid w-full gap-2 sm:grid-cols-2">
+          {suggestedActions.map((suggestedAction, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.05 * index }}
+              key={`suggested-action-${suggestedAction.title}-${index}`}
+              className={index > 1 ? 'hidden sm:block' : 'block'}
+            >
+              <Button
+                variant="ghost"
+                onClick={async () => {
+                  append({
+                    role: 'user',
+                    content: suggestedAction.action
+                  })
+                }}
+                className="h-auto w-full flex-1 items-start justify-start gap-1 rounded-xl border px-4 py-3.5 text-left text-sm sm:flex-col"
+              >
+                <span className="font-medium">{suggestedAction.title}</span>
+                <span className="text-muted-foreground">{suggestedAction.label}</span>
+              </Button>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
       <Textarea
-        data-testid="multimodal-input"
         ref={textareaRef}
         placeholder="Send a message..."
         value={input}
         onChange={handleInput}
         className={cn(
-          'bg-muted max-h-[calc(75dvh)] min-h-[24px] resize-none overflow-hidden rounded-2xl pb-10 !text-base dark:border-zinc-700',
+          'bg-muted max-h-[calc(75dvh)] min-h-[24px] resize-none overflow-hidden rounded-xl !text-base',
           className
         )}
-        rows={2}
+        rows={3}
         autoFocus
+        onKeyDown={event => {
+          if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault()
+
+            if (isLoading) {
+              toast.error('Please wait for the model to finish its response!')
+            } else {
+              submitForm()
+            }
+          }
+        }}
       />
 
-      <div className="absolute right-0 bottom-0 flex w-fit flex-row justify-end px-6 py-2">
-        {true ? <StopButton stop={stop} /> : <SendButton input={input} />}
-      </div>
+      {isLoading ? (
+        <Button
+          className="absolute right-2 bottom-2 m-0.5 h-fit rounded-full border p-1.5 dark:border-zinc-600"
+          onClick={event => {
+            event.preventDefault()
+            stop()
+            setMessages(messages => sanitizeUIMessages(messages))
+          }}
+        >
+          <StopCircle size={14} />
+        </Button>
+      ) : (
+        <Button
+          className="absolute right-2 bottom-2 m-0.5 h-fit rounded-full border p-1.5 dark:border-zinc-600"
+          onClick={event => {
+            event.preventDefault()
+            submitForm()
+          }}
+          disabled={input.length === 0}
+        >
+          <ArrowUpIcon size={14} />
+        </Button>
+      )}
     </div>
   )
 }
-
-export default memo(MultimodalInput)
-
-function PureStopButton({
-  stop
-  // setMessages
-}: {
-  stop: () => void
-  // setMessages: UseChatHelpers['setMessages']
-}) {
-  return (
-    <Button
-      data-testid="stop-button"
-      className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
-      onClick={event => {
-        event.preventDefault()
-        stop()
-        // setMessages(messages => messages)
-      }}
-    >
-      {/* <StopIcon size={14} /> */}
-      <div className="h-3.5 w-3.5"></div>
-    </Button>
-  )
-}
-
-const StopButton = memo(PureStopButton)
-
-function PureSendButton({
-  // submitForm,
-  input
-  // uploadQueue
-}: {
-  // submitForm: () => void
-  input: string
-  // uploadQueue: Array<string>
-}) {
-  return (
-    <Button
-      data-testid="send-button"
-      className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
-      onClick={event => {
-        event.preventDefault()
-        // submitForm()
-      }}
-      disabled={input.length === 0}
-    >
-      {/* <ArrowUpIcon size={14} /> */}
-      <div className="h-3.5 w-3.5"></div>
-    </Button>
-  )
-}
-
-const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
-  // if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length) return false
-  if (prevProps.input !== nextProps.input) return false
-  return true
-})
