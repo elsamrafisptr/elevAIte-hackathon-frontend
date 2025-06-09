@@ -1,37 +1,38 @@
 'use client'
 
-import { useEffect } from 'react'
+import Link from 'next/link'
+
+import { Button } from '@/components/ui/button'
 
 import { fetcher, useSWRAxios } from '@/lib/swr'
 
 const Home = () => {
-  const { data, error, isLoading, mutate } = useSWRAxios('/api/v1/health/', fetcher, {
-    refreshInterval: 30000,
+  const { data, error, isLoading } = useSWRAxios('/api/v1/health/', fetcher, {
+    refreshInterval: 1000 * 60 * 60,
     revalidateOnFocus: true
   })
-
-  useEffect(() => {
-    if (data) {
-      console.log('Health check succeeded:', data)
-    }
-  }, [data])
 
   return (
     <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-t from-blue-200 to-blue-50">
       {isLoading && <p>Checking server health…</p>}
       {error && <p className="text-red-600">Error: {error.message}</p>}
       {data && (
-        <div className="text-center">
-          <h1 className="text-3xl font-semibold">Server is {data.message}</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Last checked at: {new Date(data.timestamp).toLocaleString()}
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-bold">{data.data.heading}</h1>
+            <p className="text-gray-700">{data.data.paragraph}</p>
+          </div>
+          <p className="mt-2 text-xs font-medium text-gray-700">
+            Last checked at: {new Date(data.data.time).toLocaleString()}
           </p>
-          <button
-            className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:cursor-pointer hover:bg-blue-600"
-            onClick={() => mutate()}
-          >
-            {isLoading ? 'Loading...' : 'Re-check Now'}
-          </button>
+          <div className='flex gap-2'>
+            <Button asChild className='w-fit'>
+              <Link href={'/login'}>Login</Link>
+            </Button>
+            <Button asChild variant="secondary" className='w-fit'>
+              <Link href={'/app'}>Go to Apps</Link>
+            </Button>
+          </div>
         </div>
       )}
     </section>
