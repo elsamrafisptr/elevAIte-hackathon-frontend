@@ -1,17 +1,14 @@
 import { usePathname, useRouter } from 'next/navigation'
 
 import { MOBILE_NAVIGATION_BLOCKER, navItems } from '@/common/constants'
-import { useState } from 'react'
 
 const MobileMenuNavigationBar = () => {
-  const [activeNavItem, setActiveNavItem] = useState('dashboard')
   const pathname = usePathname()
   const router = useRouter()
 
   if (MOBILE_NAVIGATION_BLOCKER.includes(pathname)) return null
 
-  const handleNavClick = (itemId: string, href: string) => {
-    setActiveNavItem(itemId)
+  const handleNavClick = (href: string) => {
     router.push(href)
   }
 
@@ -20,12 +17,12 @@ const MobileMenuNavigationBar = () => {
       <div className="flex items-center justify-around py-2">
         {navItems.map(item => {
           const Icon = item.icon
-          const isActive = activeNavItem === item.id
+          const isActive = pathname === item.href
           return (
             <button
               key={item.id}
               type="button"
-              onClick={() => handleNavClick(item.id, item.href)}
+              onClick={() => handleNavClick(item.href)}
               className={`flex min-w-0 flex-1 flex-col items-center justify-center p-2 transition-all duration-200 hover:cursor-pointer ${
                 isActive
                   ? 'scale-105 transform text-blue-600'
