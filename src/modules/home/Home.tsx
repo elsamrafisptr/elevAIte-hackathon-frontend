@@ -25,11 +25,11 @@ const Home = () => {
           <p className="mt-2 text-xs font-medium text-gray-700">
             Last checked at: {new Date(data.data.time).toLocaleString()}
           </p>
-          <div className='flex gap-2'>
-            <Button asChild className='w-fit'>
+          <div className="flex gap-2">
+            <Button asChild className="w-fit">
               <Link href={'/login'}>Login</Link>
             </Button>
-            <Button asChild variant="secondary" className='w-fit'>
+            <Button asChild variant="secondary" className="w-fit">
               <Link href={'/app'}>Go to Apps</Link>
             </Button>
           </div>
