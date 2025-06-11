@@ -1,6 +1,8 @@
 'use client'
 
-import Image from 'next/image'
+import Link from 'next/link'
+
+import { ArrowLeft } from 'lucide-react'
 
 import useLoginForm from './actions/login-form'
 
@@ -19,26 +21,27 @@ const Login = () => {
   const { form, isPending, onSubmit } = useLoginForm()
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-t from-blue-200 to-blue-50 px-5">
-      <div className="flex w-full flex-col justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">
-        <Image
-          src="/logo-black.png"
-          alt="happykids"
-          width={80}
-          height={80}
-          className="self-center object-cover"
-          priority
-        />
+      <Button variant="outline" className="absolute top-5 left-5">
+        <ArrowLeft />
+        <Link href="/" className="">
+          Kembali ke Beranda
+        </Link>
+      </Button>
+      <div className="flex w-full flex-col items-center justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">
+        <h1 className="max-w-80 py-6 text-center text-lg font-semibold">
+          Selamat Datang Pada Website Anti Judi Online No.1 di Indonesia
+        </h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="email@example.id"
+                      placeholder="Contoh: tungtungtungsahur123"
                       disabled={isPending}
                       {...field}
                     />
@@ -52,11 +55,11 @@ const Login = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Kata Sandi</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="password"
+                      placeholder="Masukkan kata sandi anda"
                       disabled={isPending}
                       {...field}
                     />
@@ -66,10 +69,16 @@ const Login = () => {
               )}
             />
             <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? 'Loading...' : 'Login'}
+              {isPending ? 'Loading...' : 'Masuk Website'}
             </Button>
           </form>
         </Form>
+        <span className="flex items-center gap-0.5">
+          <p>Belum punya akun?</p>
+          <Link href="/register" className="underline underline-offset-4">
+            Daftar Sekarang
+          </Link>
+        </span>
       </div>
     </div>
   )

@@ -1,10 +1,13 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const url = request.nextUrl.clone()
+  const token = request.cookies.get('access_token')?.value
 
-  if (pathname.includes('/ping')) {
-    return new Response('pong', { status: 200 })
+  const protectedPaths = ['/app', '/onboarding']
+  if (protectedPaths.includes(url.pathname) && !token) {
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
   }
 
   return NextResponse.next()
@@ -12,6 +15,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/app/:path*',
+    '/dashboard/:path*',
+    '/onboarding/:path*',
     /*
      * Match all request paths except for the ones starting with:
      * - _next/static (static files)

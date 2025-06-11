@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { fetcher, useSWRAxios } from '@/lib/swr'
 
 const Home = () => {
-  const { data, error, isLoading } = useSWRAxios('/api/v1/health/', fetcher, {
+  const { data, error, isLoading } = useSWRAxios('/v1/health/', fetcher, {
     refreshInterval: 1000 * 60 * 60,
     revalidateOnFocus: true
   })
@@ -29,7 +29,7 @@ const Home = () => {
             <Button asChild className="w-fit">
               <Link href={'/login'}>Login</Link>
             </Button>
-            <Button asChild variant="secondary" className="w-fit">
+            <Button asChild variant="outline" className="w-fit">
               <Link href={'/app'}>Go to Apps</Link>
             </Button>
           </div>
