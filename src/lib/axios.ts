@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   baseURL: Config.APP_URL,
   headers: {
     Accept: 'application/json; charset=utf-8',
-    'Content-Type': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
     'X-App-Version': packageJson.version
   },
   timeout: 45000,

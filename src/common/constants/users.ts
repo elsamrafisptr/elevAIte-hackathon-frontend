@@ -13,7 +13,7 @@ export type User = {
 export type GetUser = () => User | undefined
 
 export const loginSchema = z.object({
-  email: z.string().min(5).email(),
+  username: z.string().min(5).max(32),
   password: z.string().min(5).max(32)
 })
 

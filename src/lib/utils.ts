@@ -1,3 +1,4 @@
+// lib/auth.ts
 import { Message } from 'ai'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
