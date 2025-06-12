@@ -35,7 +35,7 @@ const Login = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -90,7 +90,7 @@ const Login = () => {
 
             <FormField
               control={form.control}
-              name="password"
+              name="verify_password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Konfirmasi Password</FormLabel>
@@ -106,7 +106,11 @@ const Login = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isPending}>
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              disabled={isPending}
+            >
               {isPending ? 'Loading...' : 'Daftarkan Akun'}
             </Button>
           </form>
