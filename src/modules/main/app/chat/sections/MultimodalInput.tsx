@@ -21,14 +21,14 @@ import { cn, sanitizeUIMessages } from '@/lib/utils'
 
 const suggestedActions = [
   {
-    title: 'What is the weather',
-    label: 'in San Francisco?',
-    action: 'What is the weather in San Francisco?'
+    title: 'Bagaimana perasaan dan keadaan kamu',
+    label: 'buat hari ini?',
+    action: 'Bagaimana perasaan dan keadaan kamu buat hari ini?'
   },
   {
-    title: 'How is python useful',
-    label: 'for AI engineers?',
-    action: 'How is python useful for AI engineers?'
+    title: 'Aku mau minta bantuan',
+    label: 'cara menjadi versi terbaik diriku?',
+    action: 'Aku mau minta bantuan cara menjadi versi terbaik diriku?'
   }
 ]
 
@@ -83,14 +83,11 @@ export function MultimodalInput({
   useEffect(() => {
     if (textareaRef.current) {
       const domValue = textareaRef.current.value
-      // Prefer DOM value over localStorage to handle hydration
       const finalValue = domValue || localStorageInput || ''
       setInput(finalValue)
       adjustHeight()
     }
-    // Only run once after hydration
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [localStorageInput, setInput])
 
   useEffect(() => {
     setLocalStorageInput(input)
@@ -131,7 +128,7 @@ export function MultimodalInput({
                     content: suggestedAction.action
                   })
                 }}
-                className="h-auto w-full flex-1 items-start justify-start gap-1 rounded-xl border px-4 py-3.5 text-left text-sm sm:flex-col"
+                className="h-auto w-full flex-1 cursor-pointer items-start justify-start gap-1 rounded-xl border px-4 py-3.5 text-left text-sm sm:flex-col"
               >
                 <span className="font-medium">{suggestedAction.title}</span>
                 <span className="text-muted-foreground">{suggestedAction.label}</span>
@@ -147,7 +144,7 @@ export function MultimodalInput({
         value={input}
         onChange={handleInput}
         className={cn(
-          'bg-muted max-h-[calc(75dvh)] min-h-[24px] resize-none overflow-hidden rounded-xl !text-base',
+          'bg-muted max-h-[calc(75dvh)] min-h-[24px] resize-none overflow-hidden rounded-xl pr-16 !text-base',
           className
         )}
         rows={3}
@@ -167,7 +164,7 @@ export function MultimodalInput({
 
       {isLoading ? (
         <Button
-          className="absolute right-2 bottom-2 m-0.5 h-fit rounded-full border p-1.5 dark:border-zinc-600"
+          className="absolute right-2 bottom-1 m-0.5 h-fit rounded-full border p-1.5 hover:cursor-pointer dark:border-zinc-600"
           onClick={event => {
             event.preventDefault()
             stop()
@@ -178,7 +175,7 @@ export function MultimodalInput({
         </Button>
       ) : (
         <Button
-          className="absolute right-2 bottom-2 m-0.5 h-fit rounded-full border p-1.5 dark:border-zinc-600"
+          className="absolute right-2 bottom-1 m-0.5 h-fit rounded-full border p-1.5 hover:cursor-pointer disabled:cursor-not-allowed dark:border-zinc-600"
           onClick={event => {
             event.preventDefault()
             submitForm()

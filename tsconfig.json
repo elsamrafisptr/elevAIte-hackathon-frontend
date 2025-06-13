@@ -74,6 +74,6 @@
       }
     ],
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".storybook/*.ts", ".next/types/**/*.ts", "**/*.mts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".storybook/*.ts", ".next/types/**/*.ts", "**/*.mts", "src/modules/auth/onboarding/actions/onboarding-form.tsx"],
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.e2e.ts"]
 }

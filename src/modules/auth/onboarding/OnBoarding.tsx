@@ -1,149 +1,118 @@
 'use client'
 
-import { useOnboarding } from '@/hooks'
-import { AlertCircle, ChevronLeft, ChevronRight, Save } from 'lucide-react'
+import Link from 'next/link'
 
-import { ProgressIndicator } from './sections/ProgressIndicator'
-import { StepOne } from './sections/StepOneForm'
+import useOnBoardingForm from './actions/onboarding-form'
 
-import PageSectionLayout from '@/components/layouts/PageSectionLayout'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
 
-const steps = [
-  { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
-  { id: 2, title: 'Profile', description: 'Complete your profile' },
-  { id: 3, title: 'Interests', description: 'What interests you?' },
-  { id: 4, title: 'Preferences', description: 'Customize your experience' },
-  { id: 5, title: 'Complete', description: "You're all set!" }
-]
+import { cn } from '@/lib/utils'
 
-export default function OnBoarding() {
-  const {
-    currentStep,
-    data,
-    errors,
-    isLoading,
-    updateData,
-    nextStep,
-    prevStep,
-    completeOnboarding,
-    saveProgress
-  } = useOnboarding()
-
-  const handleComplete = async () => {
-    const success = await completeOnboarding()
-    if (success) {
-      console.log('Onboarding completed successfully!')
-    }
-  }
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return <StepOne data={data} errors={errors} onUpdate={updateData} />
-      //   case 2:
-      //     return <StepTwo data={data} errors={errors} onUpdate={updateData} />
-      //   case 3:
-      //     return <StepThree data={data} errors={errors} onUpdate={updateData} />
-      //   case 4:
-      //     return <StepFour data={data} onUpdate={updateData} />
-      //   case 5:
-      //     return <StepFive data={data} isLoading={isLoading} />
-      default:
-        return null
-    }
-  }
-
+const OnBoarding = () => {
+  const { form, isPending, onSubmit } = useOnBoardingForm()
   return (
-    <PageSectionLayout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-8">
-        <div className="mx-auto max-w-4xl">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-gray-900">
-              Complete Your Setup
-            </h1>
-            <p className="text-gray-600">
-              Let&apos;s personalize your experience in just a few steps
-            </p>
-          </div>
-
-          {/* Progress Indicator */}
-          <ProgressIndicator
-            currentStep={currentStep}
-            totalSteps={steps.length}
-            steps={steps}
-          />
-
-          {/* Error Alert */}
-          {Object.keys(errors).length > 0 && currentStep < 5 && (
-            <Alert variant="destructive" className="mx-auto mb-6 max-w-2xl">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Please fix the errors below before continuing.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Step Content */}
-          <div className="mb-8">{renderStep()}</div>
-
-          {/* Navigation */}
-          {currentStep < 5 && (
-            <div className="mx-auto flex max-w-2xl items-center justify-between">
-              <div className="flex items-center gap-3">
-                {currentStep > 1 && (
-                  <Button
-                    variant="outline"
-                    onClick={prevStep}
-                    className="flex items-center gap-2"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    Previous
-                  </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  onClick={saveProgress}
-                  className="flex items-center gap-2 text-gray-600"
-                >
-                  <Save className="h-4 w-4" />
-                  Save Progress
-                </Button>
-              </div>
-
-              <div className="flex items-center gap-3">
-                {currentStep < 4 ? (
-                  <Button onClick={nextStep} className="flex items-center gap-2">
-                    Continue
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button onClick={nextStep} className="flex items-center gap-2">
-                    Review & Complete
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Complete Button */}
-          {currentStep === 5 && !isLoading && (
-            <div className="text-center">
-              <Button
-                onClick={handleComplete}
-                size="lg"
-                className="px-8"
-                disabled={isLoading}
-              >
-                Get Started
-              </Button>
-            </div>
-          )}
-        </div>
+    <div className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-t from-blue-200 to-blue-50 p-5">
+      <div className="flex w-full flex-col items-center justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">
+        <h1 className="max-w-80 py-6 text-center text-lg font-semibold">
+          Selamat Datang Pada Website Anti Judi Online No.1 di Indonesia
+        </h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Label Question</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {[{ value: '' }, { value: '' }, { value: '' }, { value: '' }].map(
+                        (item, index) => {
+                          const isSelected = field.value === item.value
+                          return (
+                            <Card
+                              key={index}
+                              className={cn(
+                                'aspect-square cursor-pointer transition-all',
+                                isSelected
+                                  ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                  : ''
+                              )}
+                            >
+                              <CardContent className="space-y-4 p-6 text-center">
+                                <>
+                                  {isSelected && (
+                                    <div className="flex items-center justify-center">
+                                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500">
+                                        <div className="h-2 w-2 rounded-full bg-white"></div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              </CardContent>
+                            </Card>
+                          )
+                        }
+                      )}
+                    </div>
+                    {/* <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col"
+                    >
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="all" />
+                        </FormControl>
+                        <FormLabel className="font-normal">All new messages</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="mentions" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Direct messages and mentions
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="none" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Nothing</FormLabel>
+                      </FormItem>
+                    </RadioGroup> */}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              disabled={isPending}
+            >
+              {isPending ? 'Loading...' : 'Kirim Data Pelengkap'}
+            </Button>
+          </form>
+        </Form>
+        <span className="flex items-center gap-0.5">
+          <p>Belum siap isi data lengkap?</p>
+          <Link href="/" className="underline underline-offset-4">
+            Menuju Beranda
+          </Link>
+        </span>
       </div>
-    </PageSectionLayout>
+    </div>
   )
 }
+
+export default OnBoarding
