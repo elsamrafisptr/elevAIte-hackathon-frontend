@@ -1,7 +1,5 @@
 'use client'
 
-import Link from 'next/link'
-
 import { useChat } from '@ai-sdk/react'
 import { motion } from 'framer-motion'
 import { MessageCircleIcon } from 'lucide-react'
@@ -55,44 +53,11 @@ export default function Chat() {
                 <MessageCircleIcon size={32} />
               </p>
               <p>
-                This is an{' '}
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="https://github.com/vercel-labs/ai-sdk-preview-python-streaming"
-                  target="_blank"
-                >
-                  open source
-                </Link>{' '}
-                template that demonstrates the usage of{' '}
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="https://sdk.vercel.ai/docs/ai-sdk-ui/stream-protocol#data-stream-protocol"
-                  target="_blank"
-                >
-                  Data Stream Protocol
-                </Link>{' '}
-                to stream chat completions from a Python function (
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="https://fastapi.tiangolo.com"
-                  target="_blank"
-                >
-                  FastAPI
-                </Link>
-                ) along with the
-                <code className="bg-muted rounded-md px-1 py-0.5">useChat</code> hook on
-                the client to create a seamless chat experience.
-              </p>
-              <p>
-                You can learn more about the AI SDK by visiting the{' '}
-                <Link
-                  className="font-medium underline underline-offset-4"
-                  href="https://sdk.vercel.ai/docs"
-                  target="_blank"
-                >
-                  docs
-                </Link>
-                .
+                Halo, Kami adalah{' '}
+                <span className="font-medium">Teman Anti Judol (Judi Online)</span>.
+                Kami ada disini untuk membantu dan mendampingi kamu agar terhindar,
+                terbebas, dan menjadi versi terbaik dari diri kamu. Jadi cerita aja ke
+                kami, jangan sungkan-sungkan ya
               </p>
             </div>
           </motion.div>

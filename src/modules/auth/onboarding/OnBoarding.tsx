@@ -1,149 +1,303 @@
 'use client'
 
-import { useOnboarding } from '@/hooks'
-import { AlertCircle, ChevronLeft, ChevronRight, Save } from 'lucide-react'
+import Link from 'next/link'
 
-import { ProgressIndicator } from './sections/ProgressIndicator'
-import { StepOne } from './sections/StepOneForm'
+import useOnBoardingForm from './actions/onboarding-form'
 
-import PageSectionLayout from '@/components/layouts/PageSectionLayout'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
+import { Textarea } from '@/components/ui/textarea'
 
-const steps = [
-  { id: 1, title: 'Basic Info', description: 'Tell us about yourself' },
-  { id: 2, title: 'Profile', description: 'Complete your profile' },
-  { id: 3, title: 'Interests', description: 'What interests you?' },
-  { id: 4, title: 'Preferences', description: 'Customize your experience' },
-  { id: 5, title: 'Complete', description: "You're all set!" }
-]
+import { cn } from '@/lib/utils'
 
-export default function OnBoarding() {
-  const {
-    currentStep,
-    data,
-    errors,
-    isLoading,
-    updateData,
-    nextStep,
-    prevStep,
-    completeOnboarding,
-    saveProgress
-  } = useOnboarding()
-
-  const handleComplete = async () => {
-    const success = await completeOnboarding()
-    if (success) {
-      console.log('Onboarding completed successfully!')
+const onBoardingFormData = {
+  question_1: [
+    {
+      value: 'male',
+      title: 'Laki-Laki',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'female',
+      title: 'Perempuan',
+      description: 'Hanya pesan langsung dan mention'
     }
-  }
-
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return <StepOne data={data} errors={errors} onUpdate={updateData} />
-      //   case 2:
-      //     return <StepTwo data={data} errors={errors} onUpdate={updateData} />
-      //   case 3:
-      //     return <StepThree data={data} errors={errors} onUpdate={updateData} />
-      //   case 4:
-      //     return <StepFour data={data} onUpdate={updateData} />
-      //   case 5:
-      //     return <StepFive data={data} isLoading={isLoading} />
-      default:
-        return null
+  ],
+  question_2: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
     }
-  }
+  ],
+  question_3: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    }
+  ],
+  question_4: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    }
+  ]
+}
 
+const OnBoarding = () => {
+  const { form, isPending, onSubmit } = useOnBoardingForm()
   return (
-    <PageSectionLayout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-8">
-        <div className="mx-auto max-w-4xl">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-gray-900">
-              Complete Your Setup
-            </h1>
-            <p className="text-gray-600">
-              Let&apos;s personalize your experience in just a few steps
-            </p>
-          </div>
+    <div className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-t from-blue-200 to-blue-50 p-5">
+      <div className="flex w-full flex-col items-center justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">
+        <h1 className="max-w-80 py-6 text-center text-lg font-semibold">
+          Selamat Datang Pada Website Anti Judi Online No.1 di Indonesia
+        </h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Pilih jenis gender kamu</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_1.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Progress Indicator */}
-          <ProgressIndicator
-            currentStep={currentStep}
-            totalSteps={steps.length}
-            steps={steps}
-          />
+            <FormField
+              control={form.control}
+              name="early_prevention"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Apa langkah pencegahan yang sudah kamu lakukan?</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_2.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Error Alert */}
-          {Object.keys(errors).length > 0 && currentStep < 5 && (
-            <Alert variant="destructive" className="mx-auto mb-6 max-w-2xl">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Please fix the errors below before continuing.
-              </AlertDescription>
-            </Alert>
-          )}
+            <FormField
+              control={form.control}
+              name="gamble_frequency"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Intensitas frekuensi judi (Seberapa sering?)</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_3.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Step Content */}
-          <div className="mb-8">{renderStep()}</div>
+            <FormField
+              control={form.control}
+              name="current_condition"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Bagaimana perasaan atau keadaan sekarang?</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_4.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Navigation */}
-          {currentStep < 5 && (
-            <div className="mx-auto flex max-w-2xl items-center justify-between">
-              <div className="flex items-center gap-3">
-                {currentStep > 1 && (
-                  <Button
-                    variant="outline"
-                    onClick={prevStep}
-                    className="flex items-center gap-2"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    Previous
-                  </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  onClick={saveProgress}
-                  className="flex items-center gap-2 text-gray-600"
-                >
-                  <Save className="h-4 w-4" />
-                  Save Progress
-                </Button>
-              </div>
+            <FormField
+              control={form.control}
+              name="current_loss"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Apa saja kerugian yang kamu alami?</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tuliskan jawaban anda....."
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <div className="flex items-center gap-3">
-                {currentStep < 4 ? (
-                  <Button onClick={nextStep} className="flex items-center gap-2">
-                    Continue
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button onClick={nextStep} className="flex items-center gap-2">
-                    Review & Complete
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Complete Button */}
-          {currentStep === 5 && !isLoading && (
-            <div className="text-center">
-              <Button
-                onClick={handleComplete}
-                size="lg"
-                className="px-8"
-                disabled={isLoading}
-              >
-                Get Started
-              </Button>
-            </div>
-          )}
-        </div>
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Catatan Tambahan</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tuliskan jawaban anda....."
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              disabled={isPending}
+            >
+              {isPending ? 'Loading...' : 'Kirim Data Pelengkap'}
+            </Button>
+          </form>
+        </Form>
+        <span className="flex items-center gap-0.5">
+          <p>Belum siap isi data lengkap?</p>
+          <Link href="/" className="underline underline-offset-4">
+            Menuju Beranda
+          </Link>
+        </span>
       </div>
-    </PageSectionLayout>
+    </div>
   )
 }
+
+export default OnBoarding

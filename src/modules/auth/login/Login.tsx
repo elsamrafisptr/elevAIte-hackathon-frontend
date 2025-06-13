@@ -68,7 +68,11 @@ const Login = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isPending}>
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              disabled={isPending}
+            >
               {isPending ? 'Loading...' : 'Masuk Website'}
             </Button>
           </form>

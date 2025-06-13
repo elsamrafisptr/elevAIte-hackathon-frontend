@@ -8,34 +8,36 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { registerSchema } from '@/common/constants/users'
+import { onBoardingSchema } from '@/common/constants/users'
 
 import axiosInstance from '@/lib/axios'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export default function useRegisterForm() {
+export default function useOnBoardingForm() {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<z.infer<typeof onBoardingSchema>>({
+    resolver: zodResolver(onBoardingSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      password: ''
+      gender: '',
+      early_prevention: '',
+      gamble_frequency: '',
+      current_condition: '',
+      current_loss: '',
+      notes: ''
     }
   })
 
-  async function onSubmit(values: z.infer<typeof registerSchema>) {
+  async function onSubmit(values: z.infer<typeof onBoardingSchema>) {
     startTransition(async () => {
       try {
         const response = await axiosInstance.post(
-          '/v1/auth/register',
+          '/v1/auth/login',
           {
-            username: values.username,
-            email: values.email,
-            password: values.password
+            username: values.current_condition,
+            password: values.current_condition
           },
           { withCredentials: true }
         )
@@ -43,7 +45,7 @@ export default function useRegisterForm() {
         const { code, msg } = response.data || {}
 
         if (code !== 200) {
-          toast.error('Register Failed', {
+          toast.error('Login Failed', {
             description: msg ?? 'Invalid credentials',
             position: 'top-center'
           })
@@ -51,11 +53,11 @@ export default function useRegisterForm() {
         }
 
         toast.success('Success', {
-          description: 'You are registered!',
+          description: 'You are now logged in!',
           position: 'top-center'
         })
 
-        router.push('/login')
+        router.push('/app')
       } catch (error: any) {
         toast.error('Login Error', {
           description: error?.response?.data?.msg ?? 'An unexpected error occurred.',
