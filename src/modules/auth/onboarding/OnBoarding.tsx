@@ -14,8 +14,90 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
+import { Textarea } from '@/components/ui/textarea'
 
 import { cn } from '@/lib/utils'
+
+const onBoardingFormData = {
+  question_1: [
+    {
+      value: 'male',
+      title: 'Laki-Laki',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'female',
+      title: 'Perempuan',
+      description: 'Hanya pesan langsung dan mention'
+    }
+  ],
+  question_2: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    }
+  ],
+  question_3: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    }
+  ],
+  question_4: [
+    {
+      value: 'all',
+      title: 'Semua Pesan',
+      description: 'Dapatkan notifikasi untuk semua pesan baru'
+    },
+    {
+      value: 'mentions',
+      title: 'Pesan Penting',
+      description: 'Hanya pesan langsung dan mention'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    },
+    {
+      value: 'none',
+      title: 'Mode Tenang',
+      description: 'Tidak ada notifikasi'
+    }
+  ]
+}
 
 const OnBoarding = () => {
   const { form, isPending, onSubmit } = useOnBoardingForm()
@@ -29,67 +111,170 @@ const OnBoarding = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="gender"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Label Question</FormLabel>
+                  <FormLabel>Pilih jenis gender kamu</FormLabel>
                   <FormControl>
                     <div className="grid grid-cols-4 gap-4">
-                      {[{ value: '' }, { value: '' }, { value: '' }, { value: '' }].map(
-                        (item, index) => {
-                          const isSelected = field.value === item.value
-                          return (
-                            <Card
-                              key={index}
-                              className={cn(
-                                'aspect-square cursor-pointer transition-all',
-                                isSelected
-                                  ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
-                                  : ''
-                              )}
-                            >
-                              <CardContent className="space-y-4 p-6 text-center">
-                                <>
-                                  {isSelected && (
-                                    <div className="flex items-center justify-center">
-                                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500">
-                                        <div className="h-2 w-2 rounded-full bg-white"></div>
-                                      </div>
-                                    </div>
-                                  )}
-                                </>
-                              </CardContent>
-                            </Card>
-                          )
-                        }
-                      )}
+                      {onBoardingFormData.question_1.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
                     </div>
-                    {/* <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col"
-                    >
-                      <FormItem className="flex items-center gap-3">
-                        <FormControl>
-                          <RadioGroupItem value="all" />
-                        </FormControl>
-                        <FormLabel className="font-normal">All new messages</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center gap-3">
-                        <FormControl>
-                          <RadioGroupItem value="mentions" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          Direct messages and mentions
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center gap-3">
-                        <FormControl>
-                          <RadioGroupItem value="none" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Nothing</FormLabel>
-                      </FormItem>
-                    </RadioGroup> */}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="early_prevention"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Apa langkah pencegahan yang sudah kamu lakukan?</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_2.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="gamble_frequency"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Intensitas frekuensi judi (Seberapa sering?)</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_3.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="current_condition"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Bagaimana perasaan atau keadaan sekarang?</FormLabel>
+                  <FormControl>
+                    <div className="grid grid-cols-4 gap-4">
+                      {onBoardingFormData.question_4.map((item, index) => {
+                        const isSelected = field.value === item.value
+                        return (
+                          <Card
+                            key={index}
+                            className={cn(
+                              'aspect-square cursor-pointer p-2 transition-all',
+                              isSelected
+                                ? 'shadow-lg ring-2 ring-blue-500 ring-offset-2'
+                                : ''
+                            )}
+                            onClick={() => field.onChange(item.value)}
+                          >
+                            <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
+                              <h1 className="text-xs font-medium">{item.title}</h1>
+                            </CardContent>
+                          </Card>
+                        )
+                      })}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="current_loss"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Apa saja kerugian yang kamu alami?</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tuliskan jawaban anda....."
+                      disabled={isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Catatan Tambahan</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tuliskan jawaban anda....."
+                      disabled={isPending}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

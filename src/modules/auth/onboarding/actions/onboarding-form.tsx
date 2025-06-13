@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { loginSchema } from '@/common/constants/users'
+import { onBoardingSchema } from '@/common/constants/users'
 
 import axiosInstance from '@/lib/axios'
 
@@ -18,22 +18,26 @@ export default function useOnBoardingForm() {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof onBoardingSchema>>({
+    resolver: zodResolver(onBoardingSchema),
     defaultValues: {
-      username: '',
-      password: ''
+      gender: '',
+      early_prevention: '',
+      gamble_frequency: '',
+      current_condition: '',
+      current_loss: '',
+      notes: ''
     }
   })
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: z.infer<typeof onBoardingSchema>) {
     startTransition(async () => {
       try {
         const response = await axiosInstance.post(
           '/v1/auth/login',
           {
-            username: values.username,
-            password: values.password
+            username: values.current_condition,
+            password: values.current_condition
           },
           { withCredentials: true }
         )

@@ -37,3 +37,12 @@ export const registerSchema = z
       path: ['verify_password']
     }
   )
+
+export const onBoardingSchema = z.object({
+  gender: z.string().min(5).max(32),
+  early_prevention: z.string().min(5).max(32),
+  gamble_frequency: z.string().min(5),
+  current_condition: z.string().min(5),
+  current_loss: z.string().min(5),
+  notes: z.string().min(5)
+})
