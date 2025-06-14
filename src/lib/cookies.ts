@@ -4,13 +4,14 @@ import { UsersApi } from '@/services'
 
 export async function getUserFromCookies() {
   const cookieStore = await cookies()
-  const token = cookieStore.get('access_token')?.value
-  if (!token) return null
+  const token = cookieStore.get('access_token')?.value ?? null
+  if (!token) return { user: null, token: null }
 
   try {
     const response = await UsersApi.getCurrentUser('/v1/users/me', token)
-    return response.data?.data ?? null
+    const user = response.data?.data ?? null
+    return { user, token }
   } catch {
-    return null
+    return { user: null, token: null }
   }
 }
