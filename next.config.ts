@@ -16,10 +16,7 @@ const nextConfig: NextConfig = {
   rewrites: async () => [
     {
       source: '/api/chat',
-      destination:
-        process.env.NODE_ENV === 'development'
-          ? 'http://127.0.0.1:8000/api/v1/chat'
-          : '/api/'
+      destination: `${process.env.NEXT_PUBLIC_APP_URL}/v1/chat`
     }
   ]
 }

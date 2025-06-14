@@ -1,5 +1,12 @@
 import { z } from 'zod'
 
+import {
+  GamblingFrequency,
+  Gender,
+  MoodStatus,
+  PreventiveMeasureFrequency
+} from './onboarding'
+
 export type IUser = {
   id: string
   name: string
@@ -38,11 +45,13 @@ export const registerSchema = z
     }
   )
 
-export const onBoardingSchema = z.object({
-  gender: z.string().min(5).max(32),
-  early_prevention: z.string().min(5).max(32),
-  gamble_frequency: z.string().min(5),
-  current_condition: z.string().min(5),
-  current_loss: z.string().min(5),
-  notes: z.string().min(5)
-})
+export const onBoardingSchema = z
+  .object({
+    gender: z.nativeEnum(Gender).optional(),
+    prevention: z.nativeEnum(PreventiveMeasureFrequency).optional(),
+    gamble_frequency: z.nativeEnum(GamblingFrequency).optional(),
+    mood: z.nativeEnum(MoodStatus).optional(),
+    gamble_loss: z.string().min(5).max(500),
+    notes: z.string().max(500).optional()
+  })
+  .strict()

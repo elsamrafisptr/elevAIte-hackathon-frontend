@@ -21,11 +21,11 @@ export default function useOnBoardingForm() {
   const form = useForm<z.infer<typeof onBoardingSchema>>({
     resolver: zodResolver(onBoardingSchema),
     defaultValues: {
-      gender: '',
-      early_prevention: '',
-      gamble_frequency: '',
-      current_condition: '',
-      current_loss: '',
+      gender: undefined,
+      prevention: undefined,
+      gamble_frequency: undefined,
+      mood: undefined,
+      gamble_loss: '',
       notes: ''
     }
   })
@@ -34,12 +34,21 @@ export default function useOnBoardingForm() {
     startTransition(async () => {
       try {
         const response = await axiosInstance.post(
-          '/v1/auth/login',
+          '/v1/profiles',
           {
-            username: values.current_condition,
-            password: values.current_condition
+            gender: values.gender,
+            prevention: values.prevention,
+            gamble_frequency: values.gamble_frequency,
+            mood: values.mood,
+            gamble_loss: values.gamble_loss,
+            notes: values.notes
           },
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX3V1aWQiOiIwMWFlZmVkMy02YTQ1LTRkYjktYWZlYy01ZTY0OWU5MGIwZGIiLCJleHAiOjE3NTAwMDQ2OTIsInN1YiI6Ijc1MWZlMTE5LTM2M2MtNGZmNS1hZGUwLTA3ZDQzZDI4NjA1YiJ9.EV4S1LR5MijP-KLBaFQIXSZdnYfcmKvo2l0w-cmu8Hc`
+            }
+          }
         )
 
         const { code, msg } = response.data || {}

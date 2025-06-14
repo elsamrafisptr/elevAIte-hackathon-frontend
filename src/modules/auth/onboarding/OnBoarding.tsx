@@ -16,88 +16,9 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 
-import { cn } from '@/lib/utils'
+import onBoardingFormData from '@/common/constants/onboarding'
 
-const onBoardingFormData = {
-  question_1: [
-    {
-      value: 'male',
-      title: 'Laki-Laki',
-      description: 'Dapatkan notifikasi untuk semua pesan baru'
-    },
-    {
-      value: 'female',
-      title: 'Perempuan',
-      description: 'Hanya pesan langsung dan mention'
-    }
-  ],
-  question_2: [
-    {
-      value: 'all',
-      title: 'Semua Pesan',
-      description: 'Dapatkan notifikasi untuk semua pesan baru'
-    },
-    {
-      value: 'mentions',
-      title: 'Pesan Penting',
-      description: 'Hanya pesan langsung dan mention'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    }
-  ],
-  question_3: [
-    {
-      value: 'all',
-      title: 'Semua Pesan',
-      description: 'Dapatkan notifikasi untuk semua pesan baru'
-    },
-    {
-      value: 'mentions',
-      title: 'Pesan Penting',
-      description: 'Hanya pesan langsung dan mention'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    }
-  ],
-  question_4: [
-    {
-      value: 'all',
-      title: 'Semua Pesan',
-      description: 'Dapatkan notifikasi untuk semua pesan baru'
-    },
-    {
-      value: 'mentions',
-      title: 'Pesan Penting',
-      description: 'Hanya pesan langsung dan mention'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    },
-    {
-      value: 'none',
-      title: 'Mode Tenang',
-      description: 'Tidak ada notifikasi'
-    }
-  ]
-}
+import { cn } from '@/lib/utils'
 
 const OnBoarding = () => {
   const { form, isPending, onSubmit } = useOnBoardingForm()
@@ -116,7 +37,7 @@ const OnBoarding = () => {
                 <FormItem className="space-y-3">
                   <FormLabel>Pilih jenis gender kamu</FormLabel>
                   <FormControl>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-4">
                       {onBoardingFormData.question_1.map((item, index) => {
                         const isSelected = field.value === item.value
                         return (
@@ -131,7 +52,14 @@ const OnBoarding = () => {
                             onClick={() => field.onChange(item.value)}
                           >
                             <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
-                              <h1 className="text-xs font-medium">{item.title}</h1>
+                              <h1
+                                className={cn(
+                                  'text-center text-xs font-medium',
+                                  isSelected ? 'text-blue-700' : ''
+                                )}
+                              >
+                                {item.title}
+                              </h1>
                             </CardContent>
                           </Card>
                         )
@@ -145,12 +73,12 @@ const OnBoarding = () => {
 
             <FormField
               control={form.control}
-              name="early_prevention"
+              name="prevention"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Apa langkah pencegahan yang sudah kamu lakukan?</FormLabel>
+                  <FormLabel>Intensitas pencegahan yang sudah kamu lakukan?</FormLabel>
                   <FormControl>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-4">
                       {onBoardingFormData.question_2.map((item, index) => {
                         const isSelected = field.value === item.value
                         return (
@@ -165,7 +93,14 @@ const OnBoarding = () => {
                             onClick={() => field.onChange(item.value)}
                           >
                             <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
-                              <h1 className="text-xs font-medium">{item.title}</h1>
+                              <h1
+                                className={cn(
+                                  'text-center text-xs font-medium',
+                                  isSelected ? 'text-blue-700' : ''
+                                )}
+                              >
+                                {item.title}
+                              </h1>
                             </CardContent>
                           </Card>
                         )
@@ -184,7 +119,7 @@ const OnBoarding = () => {
                 <FormItem className="space-y-3">
                   <FormLabel>Intensitas frekuensi judi (Seberapa sering?)</FormLabel>
                   <FormControl>
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-5 gap-4">
                       {onBoardingFormData.question_3.map((item, index) => {
                         const isSelected = field.value === item.value
                         return (
@@ -199,7 +134,14 @@ const OnBoarding = () => {
                             onClick={() => field.onChange(item.value)}
                           >
                             <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
-                              <h1 className="text-xs font-medium">{item.title}</h1>
+                              <h1
+                                className={cn(
+                                  'text-center text-xs font-medium',
+                                  isSelected ? 'text-blue-700' : ''
+                                )}
+                              >
+                                {item.title}
+                              </h1>
                             </CardContent>
                           </Card>
                         )
@@ -213,13 +155,13 @@ const OnBoarding = () => {
 
             <FormField
               control={form.control}
-              name="current_condition"
+              name="mood"
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>Bagaimana perasaan atau keadaan sekarang?</FormLabel>
                   <FormControl>
-                    <div className="grid grid-cols-4 gap-4">
-                      {onBoardingFormData.question_4.map((item, index) => {
+                    <div className="grid grid-cols-5 gap-4">
+                      {onBoardingFormData.question_5.map((item, index) => {
                         const isSelected = field.value === item.value
                         return (
                           <Card
@@ -233,7 +175,14 @@ const OnBoarding = () => {
                             onClick={() => field.onChange(item.value)}
                           >
                             <CardContent className="flex h-full w-full flex-col items-center justify-end p-0">
-                              <h1 className="text-xs font-medium">{item.title}</h1>
+                              <h1
+                                className={cn(
+                                  'text-center text-xs font-medium',
+                                  isSelected ? 'text-blue-700' : ''
+                                )}
+                              >
+                                {item.title}
+                              </h1>
                             </CardContent>
                           </Card>
                         )
@@ -247,7 +196,7 @@ const OnBoarding = () => {
 
             <FormField
               control={form.control}
-              name="current_loss"
+              name="gamble_loss"
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>Apa saja kerugian yang kamu alami?</FormLabel>
