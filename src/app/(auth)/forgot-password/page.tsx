@@ -5,7 +5,7 @@ import ForgotPassword from '@/modules/auth/forgot-password'
 import { getUserFromCookies } from '@/lib/cookies'
 
 const ForgotPasswordPage = async () => {
-  const user = await getUserFromCookies()
+  const { user } = await getUserFromCookies()
 
   if (user) {
     if (user.status === 1) {

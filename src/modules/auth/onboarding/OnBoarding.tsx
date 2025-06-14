@@ -20,8 +20,8 @@ import onBoardingFormData from '@/common/constants/onboarding'
 
 import { cn } from '@/lib/utils'
 
-const OnBoarding = () => {
-  const { form, isPending, onSubmit } = useOnBoardingForm()
+const OnBoarding = ({ token }: { token: string }) => {
+  const { form, isPending, onSubmit } = useOnBoardingForm(token)
   return (
     <div className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-t from-blue-200 to-blue-50 p-5">
       <div className="flex w-full flex-col items-center justify-center space-y-8 rounded-xl bg-white p-8 shadow-md md:w-max md:min-w-[30rem] dark:bg-slate-950">

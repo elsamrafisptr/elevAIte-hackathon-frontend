@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
+import { UserProfilesApi } from '@/services'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,11 +11,9 @@ import { z } from 'zod'
 
 import { onBoardingSchema } from '@/common/constants/users'
 
-import axiosInstance from '@/lib/axios'
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export default function useOnBoardingForm() {
+export default function useOnBoardingForm(token: string) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
@@ -33,8 +32,7 @@ export default function useOnBoardingForm() {
   async function onSubmit(values: z.infer<typeof onBoardingSchema>) {
     startTransition(async () => {
       try {
-        const response = await axiosInstance.post(
-          '/v1/profiles',
+        const response = await UserProfilesApi.createUserProfile(
           {
             gender: values.gender,
             prevention: values.prevention,
@@ -43,12 +41,7 @@ export default function useOnBoardingForm() {
             gamble_loss: values.gamble_loss,
             notes: values.notes
           },
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX3V1aWQiOiIwMWFlZmVkMy02YTQ1LTRkYjktYWZlYy01ZTY0OWU5MGIwZGIiLCJleHAiOjE3NTAwMDQ2OTIsInN1YiI6Ijc1MWZlMTE5LTM2M2MtNGZmNS1hZGUwLTA3ZDQzZDI4NjA1YiJ9.EV4S1LR5MijP-KLBaFQIXSZdnYfcmKvo2l0w-cmu8Hc`
-            }
-          }
+          token
         )
 
         const { code, msg } = response.data || {}

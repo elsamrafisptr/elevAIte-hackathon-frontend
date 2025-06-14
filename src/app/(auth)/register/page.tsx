@@ -5,7 +5,7 @@ import Register from '@/modules/auth/register'
 import { getUserFromCookies } from '@/lib/cookies'
 
 const RegisterPage = async () => {
-  const user = await getUserFromCookies()
+  const { user } = await getUserFromCookies()
 
   if (user) {
     if (user.status === 1) {
