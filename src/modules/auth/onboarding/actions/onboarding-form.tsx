@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
+import { UserProfilesApi } from '@/services'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,22 +11,20 @@ import { z } from 'zod'
 
 import { onBoardingSchema } from '@/common/constants/users'
 
-import axiosInstance from '@/lib/axios'
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export default function useOnBoardingForm() {
+export default function useOnBoardingForm(token: string) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof onBoardingSchema>>({
     resolver: zodResolver(onBoardingSchema),
     defaultValues: {
-      gender: '',
-      early_prevention: '',
-      gamble_frequency: '',
-      current_condition: '',
-      current_loss: '',
+      gender: undefined,
+      prevention: undefined,
+      gamble_frequency: undefined,
+      mood: undefined,
+      gamble_loss: '',
       notes: ''
     }
   })
@@ -33,13 +32,16 @@ export default function useOnBoardingForm() {
   async function onSubmit(values: z.infer<typeof onBoardingSchema>) {
     startTransition(async () => {
       try {
-        const response = await axiosInstance.post(
-          '/v1/auth/login',
+        const response = await UserProfilesApi.createUserProfile(
           {
-            username: values.current_condition,
-            password: values.current_condition
+            gender: values.gender,
+            prevention: values.prevention,
+            gamble_frequency: values.gamble_frequency,
+            mood: values.mood,
+            gamble_loss: values.gamble_loss,
+            notes: values.notes
           },
-          { withCredentials: true }
+          token
         )
 
         const { code, msg } = response.data || {}

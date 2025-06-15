@@ -34,83 +34,13 @@ const mockUser: User = {
   streak: 15
 }
 
-const mockAchievements: Achievement[] = [
-  {
-    id: '1',
-    title: 'First Steps',
-    description: 'Completed your first daily plan',
-    icon: '🎯',
-    unlockedAt: '2024-01-15T10:00:00Z',
-    category: 'milestone'
-  },
-  {
-    id: '2',
-    title: 'Streak Master',
-    description: 'Maintained a 7-day streak',
-    icon: '🔥',
-    unlockedAt: '2024-01-22T10:00:00Z',
-    category: 'productivity'
-  },
-  {
-    id: '3',
-    title: 'Knowledge Seeker',
-    description: 'Completed 10 learning plans',
-    icon: '📚',
-    unlockedAt: '2024-02-01T10:00:00Z',
-    category: 'learning'
-  },
-  {
-    id: '4',
-    title: 'Community Builder',
-    description: 'Helped 5 other users',
-    icon: '🤝',
-    unlockedAt: '2024-02-10T10:00:00Z',
-    category: 'social'
-  }
-]
-
-const mockActivities: Activity[] = [
-  {
-    id: '1',
-    type: 'completed_plan',
-    title: 'Completed Morning Routine Optimization',
-    description: 'Successfully established a powerful morning routine',
-    timestamp: '2024-01-20T08:00:00Z',
-    points: 20
-  },
-  {
-    id: '2',
-    type: 'earned_achievement',
-    title: "Earned 'Streak Master' achievement",
-    description: 'Maintained a 7-day streak of daily plans',
-    timestamp: '2024-01-22T10:00:00Z',
-    points: 50
-  },
-  {
-    id: '3',
-    type: 'reached_milestone',
-    title: 'Reached Level 12',
-    description: 'Accumulated 2500+ points through consistent effort',
-    timestamp: '2024-01-25T14:30:00Z',
-    points: 100
-  },
-  {
-    id: '4',
-    type: 'joined_challenge',
-    title: 'Joined 30-Day Productivity Challenge',
-    description: 'Committed to improving productivity over the next month',
-    timestamp: '2024-01-26T09:15:00Z'
-  }
-]
-
 export default function UserProfile() {
   const [user, setUser] = useState<User>(mockUser)
-  const [achievements] = useState<Achievement[]>(mockAchievements)
-  const [activities] = useState<Activity[]>(mockActivities)
+  const [achievements] = useState<Achievement[]>([])
+  const [activities] = useState<Activity[]>([])
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isFollowing, setIsFollowing] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
@@ -137,18 +67,6 @@ export default function UserProfile() {
     }
   }
 
-  const handleFollow = () => {
-    setIsFollowing(!isFollowing)
-    setUser(prev => ({
-      ...prev,
-      followers: isFollowing ? prev.followers - 1 : prev.followers + 1
-    }))
-  }
-
-  const handleMessage = () => {
-    console.log('Opening message dialog...')
-  }
-
   if (isLoading && !user) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -160,19 +78,10 @@ export default function UserProfile() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-4xl">
-        {/* Profile Header */}
         <div className="mb-6 rounded-lg bg-white shadow-sm">
-          <ProfileHeader
-            user={user}
-            isOwnProfile={true}
-            isFollowing={isFollowing}
-            onFollow={handleFollow}
-            onMessage={handleMessage}
-            onEdit={() => setIsEditing(true)}
-          />
+          <ProfileHeader user={user} />
         </div>
 
-        {/* Error Alert */}
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -180,7 +89,6 @@ export default function UserProfile() {
           </Alert>
         )}
 
-        {/* Main Content */}
         {isEditing ? (
           <div className="rounded-lg bg-white shadow-sm">
             <EditProfileForm
@@ -199,7 +107,7 @@ export default function UserProfile() {
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 pb-24 lg:grid-cols-2">
                 <AchievementsSection
                   achievements={achievements.slice(0, 6)}
                   isLoading={false}
@@ -208,12 +116,16 @@ export default function UserProfile() {
               </div>
             </TabsContent>
 
-            <TabsContent value="achievements">
-              <AchievementsSection achievements={achievements} isLoading={false} />
+            <TabsContent value="achievements" className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 pb-24 lg:grid-cols-2">
+                <AchievementsSection achievements={achievements} isLoading={false} />
+              </div>
             </TabsContent>
 
-            <TabsContent value="activity">
-              <ActivityFeed activities={activities} isLoading={false} />
+            <TabsContent value="activity" className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 pb-24 lg:grid-cols-2">
+                <ActivityFeed activities={activities} isLoading={false} />
+              </div>
             </TabsContent>
           </Tabs>
         )}

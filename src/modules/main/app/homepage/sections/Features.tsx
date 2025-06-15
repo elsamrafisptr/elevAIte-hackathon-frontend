@@ -1,43 +1,35 @@
-import { Calendar, DollarSign, Heart, Shield, Target, Users } from 'lucide-react'
+import { Calendar, LayoutDashboard, Shield, Users } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
 
 const features = [
   {
     icon: Calendar,
-    title: 'Daily Check-in',
+    href: '/dashboard/plans',
+    title: 'Tantangan Harian',
     description: 'Track your progress with daily mood and craving logs',
     color: 'bg-blue-500'
   },
   {
-    icon: DollarSign,
-    title: 'Money Tracker',
-    description: "See how much money you've saved by not gambling",
-    color: 'bg-green-500'
-  },
-  {
-    icon: Heart,
-    title: 'Wellness Journal',
-    description: 'Record your thoughts, feelings, and triggers',
-    color: 'bg-red-500'
-  },
-  {
-    icon: Shield,
-    title: 'Blocking Tools',
-    description: 'Set up barriers to prevent impulsive gambling',
-    color: 'bg-purple-500'
-  },
-  {
     icon: Users,
-    title: 'Support Community',
+    title: 'Dukungan Pendampingan',
+    href: '/app/chat',
     description: 'Connect with others on the same journey',
     color: 'bg-orange-500'
   },
   {
-    icon: Target,
-    title: 'Goal Setting',
-    description: 'Set and track personal recovery milestones',
-    color: 'bg-teal-500'
+    icon: Shield,
+    title: 'Lingkungan Terlindungi',
+    href: '/app/media',
+    description: 'Set up barriers to prevent impulsive gambling',
+    color: 'bg-purple-500'
+  },
+  {
+    icon: LayoutDashboard,
+    title: 'Fitur Lainnya',
+    href: '',
+    description: "See how much money you've saved by not gambling",
+    color: 'bg-green-500'
   }
 ]
 

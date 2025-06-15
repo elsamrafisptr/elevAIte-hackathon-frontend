@@ -2,7 +2,6 @@
 
 import Features from './sections/Features'
 import Headline from './sections/Headline'
-import LatestMedia from './sections/LatestMedia'
 import Statistic from './sections/Statistic'
 
 import PageSectionLayout from '@/components/layouts/PageSectionLayout'
@@ -14,7 +13,6 @@ export default function Homepage() {
         <Headline />
         <Statistic />
         <Features />
-        <LatestMedia />
       </div>
     </PageSectionLayout>
   )

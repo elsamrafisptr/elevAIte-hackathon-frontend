@@ -21,28 +21,28 @@ const LatestPost = () => {
       type: 'video',
       title: 'Understanding Gambling Triggers',
       duration: '12:34',
-      thumbnail: '/placeholder.svg?height=200&width=300',
+      thumbnail: '',
       category: 'Educational'
     },
     {
       type: 'article',
       title: '5 Strategies to Overcome Urges',
       readTime: '8 min read',
-      thumbnail: '/placeholder.svg?height=200&width=300',
+      thumbnail: '',
       category: 'Tips'
     },
     {
       type: 'podcast',
       title: 'Recovery Stories: Week 3',
       duration: '45:12',
-      thumbnail: '/placeholder.svg?height=200&width=300',
+      thumbnail: '',
       category: 'Stories'
     },
     {
       type: 'video',
       title: 'Mindfulness for Recovery',
       duration: '18:45',
-      thumbnail: '/placeholder.svg?height=200&width=300',
+      thumbnail: '',
       category: 'Wellness'
     }
   ]
@@ -93,20 +93,24 @@ const LatestPost = () => {
             {infiniteMedia.map((item, index) => (
               <div
                 key={`${index}-${item.title}`}
-                className="flex-shrink-0 px-2"
+                className="flex-shrink-0 px-2 py-6"
                 style={{
                   width: `${100 / visibleCards}%`
                 }}
               >
-                <Card className="group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                <Card className="group cursor-pointer overflow-hidden py-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="relative overflow-hidden">
-                    <Image
-                      src={item.thumbnail || '/placeholder.svg'}
-                      alt={item.title}
-                      width={300}
-                      height={200}
-                      className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                    {item.thumbnail ? (
+                      <Image
+                        src={item.thumbnail}
+                        alt={item.title}
+                        width={300}
+                        height={200}
+                        className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="h-48 w-full bg-gray-600 object-cover transition-transform duration-500 group-hover:scale-110"></div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                     <div className="absolute top-3 left-3">
@@ -158,14 +162,6 @@ const LatestPost = () => {
                 </Card>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Infinite scroll indicator */}
-        <div className="mt-6 flex justify-center">
-          <div className="flex items-center space-x-2 rounded-full bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-blue-600"></div>
-            <span className="text-sm font-medium text-gray-600">Auto-playing</span>
           </div>
         </div>
       </div>

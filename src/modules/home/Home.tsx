@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { fetcher, useSWRAxios } from '@/lib/swr'
 
 const Home = () => {
-  const { data, error, isLoading } = useSWRAxios('/v1/health/', fetcher, {
+  const { data, error, isLoading } = useSWRAxios('/v1/health', fetcher, {
     refreshInterval: 1000 * 60 * 60,
     revalidateOnFocus: true
   })
