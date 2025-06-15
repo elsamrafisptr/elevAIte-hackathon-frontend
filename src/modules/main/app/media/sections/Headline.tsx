@@ -23,7 +23,7 @@ const Headline = () => {
               <div className="mt-4 flex items-center justify-center space-x-4">
                 <Badge className="bg-white font-semibold text-blue-600">
                   <Star className="mr-1 h-3 w-3" />
-                  128 Day Streak
+                  128 Hari Beruntun
                 </Badge>
               </div>
             </div>

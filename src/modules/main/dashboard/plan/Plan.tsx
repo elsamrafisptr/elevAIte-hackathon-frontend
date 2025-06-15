@@ -26,6 +26,8 @@ import {
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 
+import { cn } from '@/lib/utils'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface DailyPlan {
@@ -49,7 +51,7 @@ const categories = {
   career: { color: 'bg-red-500', icon: Trophy }
 }
 
-const mockPlans: any = Array.from({ length: 30 }, (_, i) => ({
+export const mockPlans: any = Array.from({ length: 30 }, (_, i) => ({
   id: i + 1,
   day: i + 1,
   title: [
@@ -160,14 +162,16 @@ export default function Plan() {
     <PageSectionLayout>
       <div className="min-h-screen p-4">
         <div className="mx-auto max-w-6xl">
-          {/* Header Section */}
           <div className="mb-8">
-            <div className="mb-6 flex items-center justify-between">
-              <div>
-                <h1 className="mb-2 text-3xl font-bold text-slate-900">
-                  Your Growth Journey
+            <div className="my-6 flex flex-col items-center justify-between gap-6">
+              <div className="flex flex-col items-center">
+                <h1 className="mb-2 text-center text-3xl font-bold text-slate-900">
+                  Perkembangan Perjalanan Kamu
                 </h1>
-                <p className="text-slate-600">Build better habits, one day at a time</p>
+                <p className="max-w-md text-center text-slate-600">
+                  Membangun kebiasan lebih baik, setiap waktu dan setiap harinya Build
+                  better habits, one day at a time
+                </p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
@@ -175,31 +179,30 @@ export default function Plan() {
                   <span className="font-semibold text-slate-900">
                     {userStats.currentStreak}
                   </span>
-                  <span className="text-sm text-slate-600">day streak</span>
+                  <span className="text-sm text-slate-600">Hari Beruntun!</span>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 shadow-sm">
                   <Star className="h-5 w-5 text-yellow-500" />
                   <span className="font-semibold text-slate-900">
                     {userStats.totalPoints}
                   </span>
-                  <span className="text-sm text-slate-600">points</span>
+                  <span className="text-sm text-slate-600">Total Poin</span>
                 </div>
               </div>
             </div>
 
-            {/* Progress Overview */}
             <Card className="bg-white shadow-sm">
               <CardContent className="p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-slate-900">Overall Progress</h3>
+                    <h3 className="font-semibold text-slate-900">Persentase Progres</h3>
                     <p className="text-sm text-slate-600">
-                      Level {userStats.level} • {userStats.completedPlans} of{' '}
-                      {plans.length} plans completed
+                      Level {userStats.level} • {userStats.completedPlans} dari{' '}
+                      {plans.length} perjalanan terselesaikan
                     </p>
                   </div>
                   <Badge variant="secondary" className="bg-slate-100 text-slate-700">
-                    {Math.round(progressPercentage)}% Complete
+                    {Math.round(progressPercentage)}% Selesai
                   </Badge>
                 </div>
                 <Progress value={progressPercentage} className="h-3" />
@@ -207,7 +210,6 @@ export default function Plan() {
             </Card>
           </div>
 
-          {/* Daily Plans Grid */}
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {currentPlans.map(plan => {
               const CategoryIcon = categories[plan.category].icon
@@ -233,7 +235,7 @@ export default function Plan() {
                           <CategoryIcon className="h-4 w-4 text-white" />
                         </div>
                         <Badge variant="outline" className="text-xs">
-                          Day {plan.day}
+                          Hari ke-{plan.day}
                         </Badge>
                       </div>
                       {plan.isCompleted && (
@@ -268,7 +270,7 @@ export default function Plan() {
                       <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-yellow-500" />
                         <span className="text-sm font-medium text-slate-700">
-                          {plan.points} pts
+                          {plan.points} poin
                         </span>
                       </div>
 
@@ -277,11 +279,12 @@ export default function Plan() {
                           size="sm"
                           onClick={() => handleCompleteTask(plan.id)}
                           disabled={plan.isCompleted}
-                          className={
+                          className={cn(
+                            'cursor-pointer',
                             plan.isCompleted ? 'bg-green-600 hover:bg-green-600' : ''
-                          }
+                          )}
                         >
-                          {plan.isCompleted ? 'Completed' : 'Start Plan'}
+                          {plan.isCompleted ? 'Selesai' : 'Mulai Tantangan'}
                         </Button>
                       )}
                     </div>
@@ -291,17 +294,17 @@ export default function Plan() {
             })}
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-4">
               <Button
                 variant="outline"
                 size="sm"
+                className="cursor-pointer"
                 onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
                 disabled={currentPage === 0}
               >
                 <ChevronLeft className="mr-1 h-4 w-4" />
-                Previous
+                Sebelumnya
               </Button>
 
               <div className="flex items-center gap-2">
@@ -311,7 +314,7 @@ export default function Plan() {
                     variant={currentPage === i ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setCurrentPage(i)}
-                    className="h-8 w-8 p-0"
+                    className="h-8 w-8 cursor-pointer p-0"
                   >
                     {i + 1}
                   </Button>
@@ -320,13 +323,14 @@ export default function Plan() {
 
               <Button
                 variant="outline"
+                className="cursor-pointer"
                 size="sm"
                 onClick={() =>
                   setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))
                 }
                 disabled={currentPage === totalPages - 1}
               >
-                Next
+                Selanjutnya
                 <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
