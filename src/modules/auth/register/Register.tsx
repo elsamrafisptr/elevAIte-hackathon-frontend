@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react'
 
 import useRegisterForm from './actions/register-form'
 
+import { PasswordInput } from '@/components/elements/password-input'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -76,11 +77,10 @@ const Login = () => {
                 <FormItem>
                   <FormLabel>Kata Sandi</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <PasswordInput
                       placeholder="Masukkan kata sandi anda"
                       disabled={isPending}
-                      {...field}
+                      field={field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -95,11 +95,10 @@ const Login = () => {
                 <FormItem>
                   <FormLabel>Konfirmasi Password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Konfirmasi kata sandi anda"
+                    <PasswordInput
+                      placeholder="Masukkan kata sandi anda"
                       disabled={isPending}
-                      {...field}
+                      field={field}
                     />
                   </FormControl>
                   <FormMessage />

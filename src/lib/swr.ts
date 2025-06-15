@@ -1,58 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosError, AxiosResponse } from 'axios'
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr'
+import useSWR, { SWRConfiguration } from 'swr'
 
 import axiosInstance from './axios'
 
-interface Return<Data, Error>
-  extends Pick<
-    SWRResponse<AxiosResponse<Data>, AxiosError<Error>>,
-    'isValidating' | 'error' | 'mutate'
-  > {
-  data: Data | undefined
-  response: AxiosResponse<Data> | undefined
+export interface SWRResult<T> {
+  data: T | undefined
+  error: Error | undefined
   isLoading: boolean
+  mutate: () => Promise<T | undefined>
 }
 
-export interface Config<Data = unknown, Error = unknown>
-  extends Omit<
-    SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
-    'fallbackData'
-  > {
-  fallbackData?: Data
-}
-
-export const useSWRAxios = <Data = unknown, Error = unknown>(
+export function useSWRAxios<T>(
   key: string | null,
-  axiosFetcher: (...args: any) => Promise<AxiosResponse<Data>>,
-  config: SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>> = {}
-): Return<Data, Error> => {
-  const {
-    data: response,
-    error,
-    isValidating,
-    mutate
-  } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(key, axiosFetcher, config)
-
-  const data = response && response.data
-  const isLoading = !error && !data
+  fetcherFn: () => Promise<T>,
+  config?: Omit<SWRConfiguration<T, any>, 'fallbackData'>
+): SWRResult<T> {
+  const { data, error, isValidating, mutate } = useSWR<T, any>(key, fetcherFn, {
+    revalidateOnFocus: true,
+    ...config
+  })
 
   return {
     data,
-    response,
     error,
-    isValidating,
-    isLoading,
-    mutate
+    isLoading: isValidating && !data && !error,
+    mutate: async () => {
+      await mutate()
+      return data
+    }
   }
 }
 
-export const fetcher = async (url: string) => {
-  return await axiosInstance.get(url).then(res => {
-    if (!res.data) {
-      throw Error(res.data.message)
-    }
-
-    return res
+export const fetcher = async (url: string, token?: string) => {
+  const res = await axiosInstance.get(url, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined
   })
+  return res
 }

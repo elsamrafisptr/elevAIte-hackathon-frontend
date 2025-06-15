@@ -8,6 +8,7 @@ import { ActivityFeed } from './sections/ActivitiesFeed'
 import { EditProfileForm } from './sections/EditProfileForm'
 import { ProfileHeader } from './sections/ProfileHeader'
 
+import LogoutButton from '@/components/elements/logout-btn'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -34,7 +35,7 @@ const mockUser: User = {
   streak: 15
 }
 
-export default function UserProfile() {
+export default function UserProfile({ token }: { token: string }) {
   const [user, setUser] = useState<User>(mockUser)
   const [achievements] = useState<Achievement[]>([])
   const [activities] = useState<Activity[]>([])
@@ -99,7 +100,7 @@ export default function UserProfile() {
             />
           </div>
         ) : (
-          <Tabs defaultValue="overview" className="space-y-6">
+          <Tabs defaultValue="overview" className="space-y-6 px-5">
             <TabsList className="grid w-full grid-cols-3 rounded-lg bg-white shadow-sm">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="achievements">Achievements</TabsTrigger>
@@ -113,18 +114,21 @@ export default function UserProfile() {
                   isLoading={false}
                 />
                 <ActivityFeed activities={activities.slice(0, 5)} isLoading={false} />
+                <LogoutButton token={token} />
               </div>
             </TabsContent>
 
             <TabsContent value="achievements" className="space-y-6">
               <div className="grid grid-cols-1 gap-6 pb-24 lg:grid-cols-2">
                 <AchievementsSection achievements={achievements} isLoading={false} />
+                <LogoutButton token={token} />
               </div>
             </TabsContent>
 
             <TabsContent value="activity" className="space-y-6">
               <div className="grid grid-cols-1 gap-6 pb-24 lg:grid-cols-2">
                 <ActivityFeed activities={activities} isLoading={false} />
+                <LogoutButton token={token} />
               </div>
             </TabsContent>
           </Tabs>
