@@ -35,6 +35,8 @@ const LogoutButton = ({ token }: { token: string }) => {
           return
         }
 
+        localStorage.removeItem('access_token')
+
         toast.success('Success', {
           description: 'Logout Success!',
           position: 'top-center'

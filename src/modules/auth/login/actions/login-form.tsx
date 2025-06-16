@@ -48,6 +48,8 @@ export default function useLoginForm() {
           return
         }
 
+        localStorage.setItem('access_token', response.data.data.access_token)
+
         toast.success('Success', {
           description: 'You are now logged in!',
           position: 'top-center'
