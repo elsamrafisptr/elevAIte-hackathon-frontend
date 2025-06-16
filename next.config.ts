@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
     {
       source: '/api/chat',
       destination: `${process.env.NEXT_PUBLIC_APP_URL}/v1/chat`
+    },
+    {
+      source: '/api/:path*',
+      destination: `${process.env.NEXT_PUBLIC_APP_URL}/:path*`
     }
   ]
 }

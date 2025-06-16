@@ -3,8 +3,10 @@ import axios from 'axios'
 import packageJson from '../../package.json'
 import { Config } from './configs'
 
+const isServer = typeof window === 'undefined'
+
 const axiosInstance = axios.create({
-  baseURL: Config.APP_URL,
+  baseURL: isServer ? Config.APP_URL : '/api',
   headers: {
     Accept: 'application/json; charset=utf-8',
     'Content-Type': 'application/json',
