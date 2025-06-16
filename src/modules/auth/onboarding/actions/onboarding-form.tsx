@@ -47,7 +47,7 @@ export default function useOnBoardingForm(token: string) {
         const { code, msg } = response.data || {}
 
         if (code !== 200) {
-          toast.error('Login Failed', {
+          toast.error('Onboarding Failed', {
             description: msg ?? 'Invalid credentials',
             position: 'top-center'
           })
@@ -55,13 +55,15 @@ export default function useOnBoardingForm(token: string) {
         }
 
         toast.success('Success', {
-          description: 'You are now logged in!',
+          description: 'Onboarding success!',
           position: 'top-center'
         })
 
-        router.push('/app')
+        setTimeout(() => {
+          router.push('/app')
+        }, 100)
       } catch (error: any) {
-        toast.error('Login Error', {
+        toast.error('Onboarding Error', {
           description: error?.response?.data?.msg ?? 'An unexpected error occurred.',
           position: 'top-center'
         })

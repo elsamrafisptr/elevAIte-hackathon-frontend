@@ -55,7 +55,9 @@ export default function useLoginForm() {
           position: 'top-center'
         })
 
-        router.push('/app')
+        setTimeout(() => {
+          router.push('/app')
+        }, 100)
       } catch (error: any) {
         toast.error('Login Error', {
           description: error?.response?.data?.msg ?? 'An unexpected error occurred.',
