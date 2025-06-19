@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
   headers: {
     Accept: 'application/json; charset=utf-8',
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
     'X-App-Version': packageJson.version
   },
   timeout: 45000,
